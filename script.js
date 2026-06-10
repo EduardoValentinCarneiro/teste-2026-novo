@@ -16,6 +16,7 @@
   };
 
   const fontScaleOrder = ["small", "normal", "large", "extra"];
+  const mobileDialogQuery = window.matchMedia("(max-width: 820px)");
 
   const strategyValues = {
     irrigacao: {
@@ -301,6 +302,9 @@
   const zoneSignalValue = document.getElementById("zoneSignalValue");
   const zoneSignalText = document.getElementById("zoneSignalText");
   const zonePracticeList = document.getElementById("zonePracticeList");
+  const observatoryMobileOpenButton = document.getElementById("observatoryMobileOpenButton");
+  const observatoryMobileCloseButton = document.getElementById("observatoryMobileCloseButton");
+  const observatoryDetailCloseButton = document.getElementById("observatoryDetailCloseButton");
   const quizStartButton = document.getElementById("quizStartButton");
   const quizSectionResult = document.getElementById("quizSectionResult");
   const quizModalOverlay = document.getElementById("quizModalOverlay");
@@ -1201,6 +1205,55 @@
     }, 220);
   }
 
+  function closeObservatoryMobileDetails(restoreFocus) {
+    body.classList.remove("observatory-mobile-detail-open");
+
+    if (restoreFocus) {
+      const activeButton = zoneButtons.find((button) => button.classList.contains("is-active"));
+      if (activeButton) {
+        activeButton.focus();
+      }
+    }
+  }
+
+  function openObservatoryMobileDetails() {
+    if (!mobileDialogQuery.matches || !body.classList.contains("observatory-mobile-open")) {
+      return;
+    }
+
+    body.classList.add("observatory-mobile-detail-open");
+    observatoryDetailCloseButton.focus();
+  }
+
+  function closeObservatoryMobileDialog(restoreFocus) {
+    body.classList.remove("observatory-mobile-open");
+    closeObservatoryMobileDetails(false);
+    observatoryMobileOpenButton.setAttribute("aria-expanded", "false");
+
+    if (restoreFocus) {
+      observatoryMobileOpenButton.focus();
+    }
+  }
+
+  function openObservatoryMobileDialog() {
+    if (!mobileDialogQuery.matches) {
+      return;
+    }
+
+    closeObservatoryMobileDetails(false);
+    body.classList.add("observatory-mobile-open");
+    observatoryMobileOpenButton.setAttribute("aria-expanded", "true");
+    observatoryMobileCloseButton.focus();
+  }
+
+  function syncMobileDialogsForViewport() {
+    if (mobileDialogQuery.matches) {
+      return;
+    }
+
+    closeObservatoryMobileDialog(false);
+  }
+
   function renderQuiz() {
     if (activeQuizQuestions.length === 0) {
       activeQuizQuestions = shuffleQuizQuestions();
@@ -1480,7 +1533,16 @@
   zoneButtons.forEach((button) => {
     button.addEventListener("click", function () {
       renderZoneProfile(button.dataset.zone, true);
+      openObservatoryMobileDetails();
     });
+  });
+
+  observatoryMobileOpenButton.addEventListener("click", openObservatoryMobileDialog);
+  observatoryMobileCloseButton.addEventListener("click", function () {
+    closeObservatoryMobileDialog(true);
+  });
+  observatoryDetailCloseButton.addEventListener("click", function () {
+    closeObservatoryMobileDetails(true);
   });
 
   timelineButtons.forEach((button) => {
@@ -1522,10 +1584,23 @@
     if (event.key === "Escape" && body.classList.contains("quick-dock-open")) {
       setQuickDockOpen(false);
     }
+    if (event.key === "Escape" && body.classList.contains("observatory-mobile-detail-open")) {
+      closeObservatoryMobileDetails(true);
+      return;
+    }
+    if (event.key === "Escape" && body.classList.contains("observatory-mobile-open")) {
+      closeObservatoryMobileDialog(true);
+    }
     if (event.key === "Escape" && body.classList.contains("quiz-modal-open")) {
       closeQuizModal();
     }
   });
+
+  if (mobileDialogQuery.addEventListener) {
+    mobileDialogQuery.addEventListener("change", syncMobileDialogsForViewport);
+  } else {
+    mobileDialogQuery.addListener(syncMobileDialogsForViewport);
+  }
 
   applyDefaultPreferences();
   applyStoredMode();

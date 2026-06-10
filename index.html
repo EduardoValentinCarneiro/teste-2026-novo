@@ -720,9 +720,28 @@
             biodiversidade e cidade se conectam. Esta área complementa o simulador e mostra, de forma
             visual, como cada decisão fortalece o agro e melhora a vida coletiva.
           </p>
+          <button
+            id="observatoryMobileOpenButton"
+            class="button button-primary mobile-modal-trigger"
+            type="button"
+            aria-controls="observatoryMobileDialog"
+            aria-expanded="false"
+          >
+            Ver painel
+          </button>
         </div>
 
-        <div class="observatory-layout">
+        <div id="observatoryMobileDialog" class="observatory-layout">
+          <div class="mobile-modal-head">
+            <div>
+              <p class="eyebrow">Painel interativo</p>
+              <strong>Toque em um ponto do mapa</strong>
+            </div>
+            <button id="observatoryMobileCloseButton" class="settings-close mobile-modal-close" type="button" aria-label="Fechar painel interativo">
+              ×
+            </button>
+          </div>
+
           <div class="panel observatory-map-panel">
             <div class="observatory-scene" aria-label="Mapa interativo da propriedade sustentável">
               <img class="observatory-image" src="./img/Painel interativo.png" alt="Imagem do painel interativo com campo, rio, mata, cidade e energia solar">
@@ -755,6 +774,10 @@
           </div>
 
           <aside class="panel observatory-detail-panel">
+            <button id="observatoryDetailCloseButton" class="settings-close mobile-detail-close" type="button" aria-label="Voltar ao mapa do painel">
+              ×
+            </button>
+
             <div class="observatory-summary-card">
               <p class="output-label">Zona em destaque</p>
               <strong id="zoneTitle">Solo protegido</strong>

@@ -159,7 +159,8 @@ body.reading-mode .settings-overlay {
 }
 
 body.settings-open,
-body.quiz-modal-open {
+body.quiz-modal-open,
+body.observatory-mobile-open {
   overflow: hidden;
 }
 
@@ -1038,6 +1039,12 @@ body.quick-dock-open .quick-dock-toggle {
   background: rgba(255, 255, 255, 0.2);
   color: var(--text);
   border: 1px solid var(--line-strong);
+}
+
+.mobile-modal-trigger,
+.mobile-modal-head,
+.mobile-detail-close {
+  display: none;
 }
 
 .full-width {
@@ -2502,6 +2509,104 @@ body.quiz-modal-open .quiz-modal {
 
   .topbar-links {
     justify-content: flex-start;
+  }
+
+  .mobile-modal-trigger {
+    display: inline-flex;
+    margin-top: 16px;
+  }
+
+  .observatory-section .observatory-layout {
+    position: fixed;
+    inset: 0;
+    z-index: 38;
+    display: none;
+    grid-template-columns: 1fr;
+    align-content: start;
+    gap: 14px;
+    padding: 14px;
+    overflow: auto;
+    background:
+      radial-gradient(circle at top left, rgba(240, 194, 125, 0.18), transparent 34%),
+      rgba(17, 16, 14, 0.58);
+    backdrop-filter: blur(8px);
+  }
+
+  body.observatory-mobile-open .observatory-section .observatory-layout {
+    display: grid;
+  }
+
+  body.observatory-mobile-open .observatory-section {
+    opacity: 1;
+    transform: none;
+  }
+
+  .mobile-modal-head {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: min(680px, 100%);
+    margin: 0 auto;
+    padding: 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 24px;
+    background: var(--panel-strong);
+    box-shadow: var(--shadow);
+  }
+
+  .mobile-modal-head .eyebrow {
+    margin-bottom: 6px;
+  }
+
+  .mobile-modal-head strong {
+    display: block;
+    font-family: "Palatino Linotype", "Book Antiqua", serif;
+    font-size: 1.35rem;
+    line-height: 1.05;
+  }
+
+  .mobile-modal-close,
+  .mobile-detail-close {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+
+  .observatory-section .observatory-map-panel,
+  .observatory-section .observatory-detail-panel {
+    width: min(680px, 100%);
+    margin: 0 auto;
+  }
+
+  .observatory-section .observatory-detail-panel {
+    position: relative;
+    display: none;
+  }
+
+  body.observatory-mobile-detail-open .observatory-section .observatory-map-panel {
+    display: none;
+  }
+
+  body.observatory-mobile-detail-open .observatory-section .observatory-detail-panel {
+    display: grid;
+  }
+
+  .mobile-detail-close {
+    position: sticky;
+    top: 8px;
+    z-index: 3;
+    justify-self: end;
+    margin-bottom: 6px;
   }
 
   .hero-copy,
